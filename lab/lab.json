@@ -5,6 +5,10 @@
     "DesiredCapacity": {
       "Type": "Number",
       "Default": 0
+    },
+    "MinSize": {
+      "Type": "Number",
+      "Default": 0
     }
   }
 }
