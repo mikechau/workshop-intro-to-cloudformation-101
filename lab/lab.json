@@ -78,7 +78,7 @@
               "CidrIp": "0.0.0.0/0"
             }
           ],
-          "VpcId": "vpc-123456"
+          "VpcId": {"Ref": "VpcId"}
         }
       }
     }
