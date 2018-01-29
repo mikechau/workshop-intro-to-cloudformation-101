@@ -201,8 +201,7 @@ YAML.
 A CloudFormation template represents a *stack*, and the components within the
 *stack* are known as *resources*.
 
-In this workshop, as a class we will compose a static template. It will cover
-everything from the VPC to an Auto Scaling Group.
+In this workshop, as a class we will compose a static template. It will cover the creation of a auto scaling group with an associated security group(s). We assume a VPC and subnets already exist.
 
 If you are lost, it is OK. This part of the workshop is more about doing.
 
