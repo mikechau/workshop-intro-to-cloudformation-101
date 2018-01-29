@@ -46,7 +46,7 @@ history of managing AWS infrastructure before CloudFormation.
 
 ### The Manual Way
 
-[!Automation - xkcd](https://imgs.xkcd.com/comics/automation.png)
+![Automation - xkcd](https://imgs.xkcd.com/comics/automation.png)
 
 The fallback for automation is just doing whatever it is manually.
 
