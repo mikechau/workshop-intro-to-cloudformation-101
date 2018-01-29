@@ -54,6 +54,7 @@ Without the right tooling, automating a process can be time consuming because a
 lot of time can be spent on building tools to assist with the automation (ie. writing a script).
 
 Examples:
+
     - Logging into the AWS console and manually provisioning servers.
     - SSH into each server to apply system upgrades.
 
@@ -68,9 +69,11 @@ Tracking changes to a system can also be challenging as there might not be any
 sort of audit trail to refer back to.
 
 Pros:
+
     - Fast
 
 Cons:
+
     - Tedious when repeating
     - Error prone when repeating
     - Hard to determine the state of the world
@@ -82,10 +85,10 @@ management tools.
 
 Popular choices include:
 
-- Chef
-- Puppet
-- Salt
-- Ansible
+    - Chef
+    - Puppet
+    - Salt
+    - Ansible
 
 Configuration management is all about maintaining consistency and tracking
 changes. Configuration management also makes it easier to audit and maintain
@@ -94,11 +97,13 @@ compliance.
 Essentially, configuration management allows you to declare the state of the world and it will update the targeted systems to match it.
 
 Pros:
+
     - Consistency
     - Auditing
     - Compliance
 
 Cons:
+
     - Not necessarily needed for containerized application deployments
     - Rolling back is not free
 
@@ -110,16 +115,19 @@ as a blueprint for what we want the infrastructure to look like.
 Templates are written using a DSL that describes the desired resources and their relationships.
 
 Examples:
+
     - CloudFormation
     - Terraform
 
 Pros:
+
     - Consistency
     - Auditing
     - Compliance
     - Rollbacks*
 
 Cons:
+
     - Potentially can destroy a resource unintentionally
 
 ## CloudFormation Templating Languages
