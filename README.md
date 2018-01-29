@@ -142,18 +142,18 @@ CloudFormation supports two flavors of templating JSON and YAML.
 
 ```json
 {
-   "AWSTemplateFormatVersion" : "2010-09-09",
-   "Description" : "Single EC2 Instance",
-   "Resources" : {
-      "MyEC2Instance" : {
-         "Type" : "AWS::EC2::Instance",
-         "Properties" : {
-            "ImageId" : "ami-79fd7eee",
-            "KeyName" : "testkey",
-            "InstanceType": "t2.micro"
-         }
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Single EC2 Instance",
+  "Resources": {
+    "MyEC2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "ImageId": "ami-79fd7eee",
+        "KeyName": "testkey",
+        "InstanceType": "t2.micro"
       }
-   }
+    }
+  }
 }
 ```
 
@@ -237,67 +237,66 @@ For example, if you have a EC2 instance that needs to talk to MySQL, the
 instance only needs to have a egress (outbound) rule to 3306. The MySQL server
 would need a ingress (inbound) rule for 3306.
 
-Let's write out a snippet:
+**Let's add a resource to our template:**
 
 ```json
-"WorkshopServerSg": {
-  "Type": "AWS::EC2::SecurityGroup",
-  "Properties": {
-    "GroupDescription": "Workshop server security group.",
-    "SecurityGroupIngress": [
+  "WorkshopServerSg": {
+    "Type": "AWS::EC2::SecurityGroup",
+    "Properties": {
+      "GroupDescription": "Workshop server security group.",
+      "SecurityGroupIngress": [
         {
-            "Description": "HTTP (all).",
-            "IpProtocol": "tcp",
-            "FromPort": 80,
-            "ToPort": 80,
-            "CidrIp": "0.0.0.0/0"
+          "Description": "HTTP (all).",
+          "IpProtocol": "tcp",
+          "FromPort": 80,
+          "ToPort": 80,
+          "CidrIp": "0.0.0.0/0"
         }
-    ],
-    "SecurityGroupEgress": [
+      ],
+      "SecurityGroupEgress": [
         {
-            "Description": "HTTP (all).",
-            "IpProtocol": "tcp",
-            "FromPort": 80,
-            "ToPort": 80,
-            "CidrIp": "0.0.0.0/0"
+          "Description": "HTTP (all).",
+          "IpProtocol": "tcp",
+          "FromPort": 80,
+          "ToPort": 80,
+          "CidrIp": "0.0.0.0/0"
         },
         {
-            "Description": "MySQL (all).",
-            "IpProtocol": "tcp",
-            "FromPort": 3306,
-            "ToPort": 3306,
-            "CidrIp": "0.0.0.0/0"
+          "Description": "MySQL (all).",
+          "IpProtocol": "tcp",
+          "FromPort": 3306,
+          "ToPort": 3306,
+          "CidrIp": "0.0.0.0/0"
         }
-    ],
-    "VpcId": "vpc-123456"
+      ],
+      "VpcId": "vpc-123456"
+    }
   }
-}
 ```
 
 ```yaml
----
-WorkshopServerSg:
-  Type: AWS::EC2::SecurityGroup
-  Properties:
-    GroupDescription: Workshop server security group.
-    SecurityGroupIngress:
-    - Description: HTTP (all).
-      IpProtocol: tcp
-      FromPort: 80
-      ToPort: 80
-      CidrIp: 0.0.0.0/0
-    SecurityGroupEgress:
-    - Description: HTTP (all).
-      IpProtocol: tcp
-      FromPort: 80
-      ToPort: 80
-      CidrIp: 0.0.0.0/0
-    - Description: MySQL (all).
-      IpProtocol: tcp
-      FromPort: 3306
-      ToPort: 3306
-      CidrIp: 0.0.0.0/0
-    VpcId: vpc-123456
+  WorkshopServerSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Workshop server security group.
+      SecurityGroupIngress:
+      - Description: HTTP (all).
+        IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - Description: HTTP (all).
+        IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      - Description: MySQL (all).
+        IpProtocol: tcp
+        FromPort: 3306
+        ToPort: 3306
+        CidrIp: 0.0.0.0/0
+      VpcId: vpc-123456
 ```
 
 **NOTE:** By default a security group will allow all outbound traffic unless
@@ -328,13 +327,83 @@ and egress rules. We also associate it to a VPC.
 
 A launch configuration is immutable and can be assigned to multiple auto scaling groups, but a auto scaling group can only use one launch configuration.
 
+**Let's add a resource to our template:**
+
+```json
+  "WorkshopLaunchConfig": {
+    "Type": "AWS::AutoScaling::LaunchConfiguration",
+    "Properties": {
+      "KeyName": "key-123456",
+      "ImageId": "ami-123456",
+      "SecurityGroups": [],
+      "InstanceType": "t2.micro"
+    }
+  }
+```
+
+```yaml
+  WorkershopLaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      KeyName: key-123456
+      ImageId: ami-123456
+      SecurityGroups: []
+      InstanceType: t2.micro
+```
+
+In our launch configuration, we've added a key name (for ssh), the AMI we want
+to use, and the instance type.
+
 #### References
 
 - [Launch Configurations](https://docs.aws.amazon.com/autoscaling/ec2/userguide/LaunchConfiguration.html)
+- [AWS::AutoScaling::LaunchConfiguration](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-as-launchconfig.html)
 
 ### Auto Scaling Group
 
 > An Auto Scaling group contains a collection of EC2 instances that share similar characteristics and are treated as a logical grouping for the purposes of instance scaling and management. For example, if a single application operates across multiple instances, you might want to increase the number of instances in that group to improve the performance of the application, or decrease the number of instances to reduce costs when demand is low. You can use the Auto Scaling group to scale the number of instances automatically based on criteria that you specify, or maintain a fixed number of instances even if a instance becomes unhealthy. This automatic scaling and maintaining the number of instances in an Auto Scaling group is the core functionality of the Amazon EC2 Auto Scaling service.
+
+A auto scaling group (asg) is collection of EC2 instances. The benefit of using
+a ASG (even if its just limited to one instance) - is that is can provide self-
+healing. If the cluster size drops due to the instance ending up in a undesired
+state, the ASG can automatically remove the unhealthy instance and spawn a new
+instance to replace it.
+
+**Let's add a resource to our template:**
+
+```json
+  "WorkshopAsg": {
+    "Type": "AWS::AutoScaling::AutoScalingGroup",
+    "Properties": {
+      "DesiredCapacity": "0",
+      "LaunchConfigurationName": {
+        "Ref": "WorkshopLaunchConfig"
+      },
+      "MaxSize": "1",
+      "MinSize": "0",
+      "VPCZoneIdentifier": [
+        "subnet-123456"
+      ]
+    }
+  }
+```
+
+```yaml
+WorkshopAsg:
+  Type: AWS::AutoScaling::AutoScalingGroup
+  Properties:
+    DesiredCapacity: '0'
+    LaunchConfigurationName:
+      Ref: WorkshopLaunchConfig
+    MaxSize: '1'
+    MinSize: '0'
+    VPCZoneIdentifier:
+    - subnet-123456
+```
+
+Here we create a auto scaling group, where we set the desired capacity to 0 (do not create any instance), we use the ref function that points to the
+`WorkshopLaunchConfig`, set the max size to 1 and the min size to 0, and we
+set the subnets.
 
 #### References
 
@@ -343,6 +412,9 @@ A launch configuration is immutable and can be assigned to multiple auto scaling
 ### EC2 Instance
 
 > Amazon Elastic Compute Cloud (Amazon EC2) provides scalable computing capacity in the Amazon Web Services (AWS) cloud. Using Amazon EC2 eliminates your need to invest in hardware up front, so you can develop and deploy applications faster. You can use Amazon EC2 to launch as many or as few virtual servers as you need, configure security and networking, and manage storage. Amazon EC2 enables you to scale up or down to handle changes in requirements or spikes in popularity, reducing your need to forecast traffic.
+
+We don't need to do anything here because our auto scaling group will create
+EC2 instances for us. This is section is only here for reference.
 
 #### References
 
