@@ -2,20 +2,22 @@
 
 This document outlines a workshop for introducing CloudFormation.
 
-Are participants expected to be a CloudFormation expert at the end of the
-workshop?
+**Are participants expected to be a CloudFormation expert at the end of the
+workshop?**
 
 Absolutely not.
 
 The goal of this workshop is to expose what CloudFormation is and does.
 
-It is totally OK if any or all of these things are beyond you.
+It is totally OK if any or all of these things are beyond you - *right now*.
 
 After the workshop, perhaps through reflection it will start to make sense.
-Alternatively, down the road you might become more exposed to the terms and concepts described in this workshop and it might start to make more sense at
+
+Down the road you might become more exposed to the terms and concepts described in this workshop and it might start to make more sense at
 that point.
 
-Just keep an open mind and everything will be 200 OK.
+Just keep an open mind and everything will be 200 OK. It's more important to
+know about things you don't know then to know everything. :)
 
 ## Overview
 
@@ -37,6 +39,7 @@ The following topics will be covered:
 - [CloudFormation Features](#cloudformation-features)
     + [Parameters](#parameters)
     + [Resource Types](#resource-types)
+    + [Functions](#functions)
 - [Lab](#lab)
 
 ## Brief History
@@ -202,6 +205,26 @@ everything from the VPC to an Auto Scaling Group.
 
 If you are lost, it is OK. This part of the workshop is more about doing.
 
+The initial template should look like this:
+
+```json
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Workshop stack.",
+  "Resources": []
+}
+```
+
+```yaml
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Workshop stack.
+Resources:
+```
+
+The following resources below, will be nested under the parent level
+`Resources` key.
+
 ### Security Groups
 
 > A security group acts as a virtual firewall that controls the traffic for one or more instances. When you launch an instance, you associate one or more security groups with the instance. You add rules to each security group that allow traffic to or from its associated instances. You can modify the rules for a security group at any time; the new rules are automatically applied to all instances that are associated with the security group. When we decide whether to allow traffic to reach an instance, we evaluate all the rules from all the security groups that are associated with the instance.
@@ -210,14 +233,87 @@ If you are lost, it is OK. This part of the workshop is more about doing.
 
 > Security groups are stateful — if you send a request from your instance, the response traffic for that request is allowed to flow in regardless of inbound security group rules. Responses to allowed inbound traffic are allowed to flow out, regardless of outbound rules.
 
+**NOTE:**
+
+By default a security group will allow all outbound traffic unless you specify
+a rule.
+
 For example, if you have a EC2 instance that needs to talk to MySQL, the
 instance only needs to have a egress (outbound) rule to 3306. The MySQL server
 would need a ingress (inbound) rule for 3306.
+
+Let's write out a snippet:
+
+```json
+"WorkshopServerSg": {
+  "Type": "AWS::EC2::SecurityGroup",
+  "Properties": {
+    "GroupDescription": "Workshop server security group.",
+    "SecurityGroupIngress": [
+        {
+            "Description": "HTTP (all).",
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+        }
+    ],
+    "SecurityGroupEgress": [
+        {
+            "Description": "HTTP (all).",
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+        },
+        {
+            "Description": "MySQL (all).",
+            "IpProtocol": "tcp",
+            "FromPort": 3306,
+            "ToPort": 3306,
+            "CidrIp": "0.0.0.0/0"
+        }
+    ],
+    "VpcId": "vpc-123456"
+  }
+}
+```
+
+```yaml
+---
+WorkshopServerSg:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+    GroupDescription: Workshop server security group.
+    SecurityGroupIngress:
+    - Description: HTTP (all).
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      CidrIp: 0.0.0.0/0
+    SecurityGroupEgress:
+    - Description: HTTP (all).
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      CidrIp: 0.0.0.0/0
+    - Description: MySQL (all).
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      CidrIp: 0.0.0.0/0
+    VpcId: vpc-123456
+```
+
+Here, we have defined a `AWS::EC2::SecurityGroup` resource and have named it
+`WorkshopServerSg`. We gave the group a description, and assigned it ingress
+and egress rules. We also associate it to a VPC.
 
 #### References
 
 - [Security Groups for Your VPC](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_SecurityGroups.html)
 - [AWS::EC2::SecurityGroup](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html)
+- [EC2 Security Group Rule Property Type](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group-rule.html)
 
 ### Launch Configuration
 
@@ -269,9 +365,15 @@ templates supports.
 
 ### Resource Types
 
+#### References
 
+- [AWS Resource Types Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)
 
-### Reference Function
+### Functions
+
+#### References
+
+- [Intrinsic Function Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html)
 
 ## Lab
 
