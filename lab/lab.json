@@ -81,7 +81,16 @@
           "VpcId": {"Ref": "VpcId"}
         }
       }
-    }
+    },
+    "LabLaunchConfig": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+      "KeyName": {"Ref": "DefaultKeyPair"}
+      "ImageId": {"Ref": "AmiId",
+      "SecurityGroups": [{"Ref": "LabSg"}],
+      "InstanceType": {"Ref": "InstanceType"}
+      }   
+    
   ]
   
   
