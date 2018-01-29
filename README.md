@@ -233,10 +233,8 @@ The following resources below, will be nested under the parent level
 
 > Security groups are stateful — if you send a request from your instance, the response traffic for that request is allowed to flow in regardless of inbound security group rules. Responses to allowed inbound traffic are allowed to flow out, regardless of outbound rules.
 
-**NOTE:**
-
-By default a security group will allow all outbound traffic unless you specify
-a rule.
+**NOTE:** By default a security group will allow all outbound traffic unless
+you specify a rule.
 
 For example, if you have a EC2 instance that needs to talk to MySQL, the
 instance only needs to have a egress (outbound) rule to 3306. The MySQL server
