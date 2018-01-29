@@ -34,9 +34,9 @@
     }
   },
   
-  "Resources": [
-    {
+  "Resources": {
       "LabSg": {
+        "Type": "AWS::EC2::SecurityGroup",
         "Properties": {
           "GroupDescription": "some description",
           "SecurityGroupEngress": [
@@ -58,7 +58,7 @@
               "Description": "HTTPS (all).",
               "IpProtocol": "tcp",
               "FromPort": 443,
-              "ToPort": 43,
+              "ToPort": 443,
               "CidrIp": "0.0.0.0/0"
             }
           ],
@@ -74,24 +74,41 @@
               "Description": "HTTPS (all).",
               "IpProtocol": "tcp",
               "FromPort": 443,
-              "ToPort": 43,
+              "ToPort": 443,
               "CidrIp": "0.0.0.0/0"
             }
           ],
           "VpcId": {"Ref": "VpcId"}
         }
-      }
-    },
+      },
     "LabLaunchConfig": {
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
-      "KeyName": {"Ref": "DefaultKeyPair"}
-      "ImageId": {"Ref": "AmiId",
+      "KeyName": {"Ref": "DefaultKeyPair"},
+      "ImageId": {"Ref": "AmiId"},
       "SecurityGroups": [{"Ref": "LabSg"}],
       "InstanceType": {"Ref": "InstanceType"}
-      }   
-    
-  ]
-  
-  
+    },
+    "LabAsg": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "DesiredCapacity": {
+          "Ref": "DesiredCapacity"
+        },
+        "LaunchConfigurationName": {
+          "Ref": "LabLaunchConfig"
+        },
+        "MaxSize": {
+          "Ref": "MaxSize"
+        },
+        "MinSize": {
+          "Ref": "MinSize"
+        },
+        "VPCZoneIdentifier": {
+          "Ref": "SubnetIds"
+        }
+      }
+    }
+   }
+ }
 }
