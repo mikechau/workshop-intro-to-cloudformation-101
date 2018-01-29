@@ -58,8 +58,8 @@ lot of time can be spent on building tools to assist with the automation (ie. wr
 
 Examples:
 
-    - Logging into the AWS console and manually provisioning servers.
-    - SSH into each server to apply system upgrades.
+- Logging into the AWS console and manually provisioning servers.
+- SSH into each server to apply system upgrades.
 
 We could save some time by writing some scripts and it'll get the job done and this will generally work fine at a small scale.
 
@@ -434,9 +434,57 @@ templates supports.
 
 > Parameters enable you to input custom values to your template each time you create or update a stack.
 
+Why are parameters useful? It allows us to reuse templates across different
+environments, as we can pass in parameters to specify customizations.
+
+`Parameters` is a top level key, where it maps a parameter name to a parameter
+object.
+
+**Here's an example:**
+
+```json
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Workshop stack.",
+  "Parameters": {
+    "Project": {
+      "Type": "String",
+      "Description": "This is a string!",
+      "Default": "my_project_name"
+    },
+    "SecurityGroups": {
+      "Type": "List<AWS::EC2::SecurityGroup::Id>",
+      "Description": "Security groups",
+      "Default": ["sg-123456"]
+    }
+  }
+}
+```
+
+```yaml
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Workshop stack.
+Parameters:
+  Project:
+    Type: String
+    Description: This is a string!
+    Default: my_project_name
+```
+
+Review the references to learn more about parameters!
+
+#### References
+
 - [Parameters](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html)
 
 ### Resource Types
+
+Review the references to see the resources CloudFormation supports creating.
+
+Custom resources can be created through Lambda Functions.
+
+This section is for reference only.
 
 #### References
 
@@ -444,10 +492,61 @@ templates supports.
 
 ### Functions
 
+CloudFormation also supports several functions, such as being able to reference
+another resource we've created, or splitting a list, joining, a list, etc.
+
+Review the references to see them all.
+
+For this workshop, we will focus on `Ref`. You saw this function back when we
+were writing the snippet for the auto scaling group. We used a `Ref` function
+to pass in the name of the launch configuration.
+
+```json
+      ...
+      "LaunchConfigurationName": {
+        "Ref": "WorkshopLaunchConfig"
+      },
+```
+
+```yaml
+    ...
+    LaunchConfigurationName:
+      Ref: WorkshopLaunchConfig
+```
+
 #### References
 
 - [Intrinsic Function Reference](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html)
+- [Ref](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html)
 
 ## Lab
 
-Using our existing CloudFormation template, configure it to accept a parameter to change the instance type, AMI (typed), and add another security group rule that allows incoming traffic on port 443.
+Write a CloudFormation template that does the following:
+
+- `AWSTemplateFormatVersion` defined to `2010-09-09`.
+- `Description` defined to `Lab stack.`.
+- Accepts a parameter called `DesiredCapacity`, that is a `Number`, and defaults to 0.
+- Accepts a parameter called `MinSize`, that is a `Number`, and defaults to 0.
+- Accepts a parameter called `MaxSize`, that is a `Number`, that defaults to 1.
+- Accepts a parameter called `AmiId`, that is a `AWS::EC2::Image::Id`, that defaults to `ami-f2d3638a `.
+- Accepts a parameter called `InstanceType`, that is a `String`, that defaults to `t2.micro`. It should restrict the options to `["t2.micro", "t2.medium"]`.
+- Accepts a parameter called `VpcId`, that is a `AWS::EC2::VPC::Id`.
+- Accepts a parameter called `DefaultKeyPair` that is a `AWS::EC2::KeyPair::KeyName`.
+- Accepts a parameter called `SubnetIds`, that is a `List<AWS::EC2::Subnet::Id>`.
+- Creates a security group named `LabSg` which has:
+  + Egress rule to MySQL (3306) on CIDR block `0.0.0.0/0`.
+  + Egress rule to HTTP (80) on CIDR block `0.0.0.0/0`.
+  + Egress rule to HTTPS (443) on CIDR block `0.0.0.0/0`.
+  + Ingress rule to HTTP (80) on CIDR block `0.0.0.0/0`.
+  + Ingress rule to HTTP (443) on CIDR block `0.0.0.0/0`.
+- Create a launch configuration named `LabLaunchConfig` which:
+  + References `DefaultKeyPair`
+  + References `AmiId`
+  + References `LabSg`
+  + References `InstanceType`
+- Create a auto scaling group named `LabAsg` which:
+  + References `DesiredCapacity`
+  + References `LabLaunchConfig`
+  + References `MaxSize`
+  + References `MinSize`
+  + References `SubnetIds`
