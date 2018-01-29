@@ -21,23 +21,23 @@ Just keep an open mind and everything will be 200 OK.
 
 The following topics will be covered:
 
-- Brief History
-    + The Manual Way
-    + Configuration Management
-    + Infrastructure as Code
-- CloudFormation Templating Languages
-    + JSON
-    + YAML
-    + Alternatives
-- CloudFormation Resources
-    + Security Groups
-    + Launch Configuration
-    + Auto Scaling Group
-    + EC2 Instance
-- CloudFormation Features
-    + Parameters
-    + Resource Types
-- Lab
+- [Brief History](#brief-history)
+    + [The Manual Way](#the-manual-way)
+    + [Configuration Management](#configuration-management)
+    + [Infrastructure as Code](#infrastructure-as-code)
+- [CloudFormation Templating Languages](#cloudformation-templating-languages)
+    + [JSON](#json)
+    + [YAML](#yaml)
+    + [Alternatives](#alternatives)
+- [CloudFormation Resources](#cloudformation-resources)
+    + [Security Groups](#security-groups)
+    + [Launch Configuration](#launch-configuration)
+    + [Auto Scaling Group](#auto-scaling-group)
+    + [EC2 Instance](#ec2-instance)
+- [CloudFormation Features](#cloudformation-features)
+    + [Parameters](#parameters)
+    + [Resource Types](#resource-types)
+- [Lab](#lab)
 
 ## Brief History
 
