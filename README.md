@@ -73,13 +73,13 @@ sort of audit trail to refer back to.
 
 Pros:
 
-    - Fast
+- Fast
 
 Cons:
 
-    - Tedious when repeating
-    - Error prone when repeating
-    - Hard to determine the state of the world
+- Tedious when repeating
+- Error prone when repeating
+- Hard to determine the state of the world
 
 ### Configuration Management
 
@@ -88,10 +88,10 @@ management tools.
 
 Popular choices include:
 
-    - Chef
-    - Puppet
-    - Salt
-    - Ansible
+- Chef
+- Puppet
+- Salt
+- Ansible
 
 Configuration management is all about maintaining consistency and tracking
 changes. Configuration management also makes it easier to audit and maintain
@@ -101,14 +101,14 @@ Essentially, configuration management allows you to declare the state of the wor
 
 Pros:
 
-    - Consistency
-    - Auditing
-    - Compliance
+- Consistency
+- Auditing
+- Compliance
 
 Cons:
 
-    - Not necessarily needed for containerized application deployments
-    - Rolling back is not free
+- Not necessarily needed for containerized application deployments
+- Rolling back is not free
 
 ### Infrastructure as Code
 
@@ -119,19 +119,20 @@ Templates are written using a DSL that describes the desired resources and their
 
 Examples:
 
-    - CloudFormation
-    - Terraform
+- CloudFormation
+- Terraform
 
 Pros:
 
-    - Consistency
-    - Auditing
-    - Compliance
-    - Rollbacks*
+- Consistency
+- Auditing
+- Compliance
+- Rollbacks*
 
 Cons:
 
-    - Potentially can destroy a resource unintentionally
+- Potentially can destroy a resource unintentionally
+- Can be slower if it can't update resources in place
 
 ## CloudFormation Templating Languages
 
