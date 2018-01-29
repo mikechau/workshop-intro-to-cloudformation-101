@@ -32,5 +32,57 @@
     "SubnetIds": {
       "Type": "List<AWS::EC2::Subnet::Id>",
     }
-  }
+  },
+  
+  "Resources": [
+    {
+      "LabSg": {
+        "Properties": {
+          "GroupDescription": "some description",
+          "SecurityGroupEngress": [
+            {
+              "Description": "MySQL",
+              "IpProtocol": "tcp",
+              "FromPort": 3306,
+              "ToPort": 3306,
+              "CidrIp": "0.0.0.0/0"
+            },
+            {
+              "Description": "HTTP (all).",
+              "IpProtocol": "tcp",
+              "FromPort": 80,
+              "ToPort": 80,
+              "CidrIp": "0.0.0.0/0"
+            },
+            {
+              "Description": "HTTPS (all).",
+              "IpProtocol": "tcp",
+              "FromPort": 443,
+              "ToPort": 43,
+              "CidrIp": "0.0.0.0/0"
+            }
+          ],
+          "SecurityGroupIgress": [
+            {
+              "Description": "HTTP (all).",
+              "IpProtocol": "tcp",
+              "FromPort": 80,
+              "ToPort": 80,
+              "CidrIp": "0.0.0.0/0"
+            },
+            {
+              "Description": "HTTPS (all).",
+              "IpProtocol": "tcp",
+              "FromPort": 443,
+              "ToPort": 43,
+              "CidrIp": "0.0.0.0/0"
+            }
+          ],
+          "VpcId": {"Ref": "VpcId"}
+        }
+      }
+    }
+  ]
+  
+  
 }
