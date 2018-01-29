@@ -35,7 +35,8 @@
   },
   
   "Resources": [
-    "LabSg": {
+    {
+      "LabSg": {
         "Properties": {
           "GroupDescription": "some description",
           "SecurityGroupEngress": [
@@ -80,6 +81,7 @@
           "VpcId": "vpc-123456"
         }
       }
+    }
   ]
   
   
