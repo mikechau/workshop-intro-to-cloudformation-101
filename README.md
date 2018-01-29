@@ -303,6 +303,9 @@ WorkshopServerSg:
 **NOTE:** By default a security group will allow all outbound traffic unless
 you specify a rule.
 
+**NOTE:** For simplicity we are being very lax by setting the `CIDR` to
+`0.0.0.0/0`. In production environments it would be more strict.
+
 Here, we have defined a `AWS::EC2::SecurityGroup` resource and have named it
 `WorkshopServerSg`. We gave the group a description, and assigned it ingress
 and egress rules. We also associate it to a VPC.
