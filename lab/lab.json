@@ -1,4 +1,10 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description":"Rakesh's fantastic description"
+  "Description":"Rakesh's fantastic description",
+  "Parameters": {
+    "DesiredCapacity": {
+      "Type": "Number",
+      "Default": 0
+    }
+  }
 }
