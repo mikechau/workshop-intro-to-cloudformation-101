@@ -211,7 +211,7 @@ The initial template should look like this:
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Workshop stack.",
-  "Resources": []
+  "Resources": {}
 }
 ```
 
