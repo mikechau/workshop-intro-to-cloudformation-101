@@ -233,9 +233,6 @@ The following resources below, will be nested under the parent level
 
 > Security groups are stateful — if you send a request from your instance, the response traffic for that request is allowed to flow in regardless of inbound security group rules. Responses to allowed inbound traffic are allowed to flow out, regardless of outbound rules.
 
-**NOTE:** By default a security group will allow all outbound traffic unless
-you specify a rule.
-
 For example, if you have a EC2 instance that needs to talk to MySQL, the
 instance only needs to have a egress (outbound) rule to 3306. The MySQL server
 would need a ingress (inbound) rule for 3306.
@@ -302,6 +299,9 @@ WorkshopServerSg:
       CidrIp: 0.0.0.0/0
     VpcId: vpc-123456
 ```
+
+**NOTE:** By default a security group will allow all outbound traffic unless
+you specify a rule.
 
 Here, we have defined a `AWS::EC2::SecurityGroup` resource and have named it
 `WorkshopServerSg`. We gave the group a description, and assigned it ingress
