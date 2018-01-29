@@ -9,6 +9,28 @@
     "MinSize": {
       "Type": "Number",
       "Default": 0
+    },
+    "MaxSize": {
+      "Type": "Number",
+      "Default": 1
+    },
+    "AmiId": {
+      "Type": "AWS::EC2::Image::Id",
+      "Default": "ami-f2d3638a"
+    },
+    "InstanceType": {
+      "Type": "String",
+      "Default": "t2.micro.",
+      "AllowedValues": ["t2.micro", "t2.medium"]
+    },
+     "VpcId": {
+      "Type": "AWS::EC2::VPC::Id",
+    },
+    "DefaultKeyPair": {
+      "Type": "AWS::EC2::KeyPair::KeyName",
+    },
+    "SubnetIds": {
+      "Type": "List<AWS::EC2::Subnet::Id>",
     }
   }
 }
